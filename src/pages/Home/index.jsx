@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useBill } from '../../context/appContext';
+import { useBill } from '../../context/AppContext';
 
 export function Home() {
   const navigate = useNavigate();
