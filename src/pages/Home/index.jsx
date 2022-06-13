@@ -16,7 +16,8 @@ export function Home() {
   /* bills: name, address{country, street, floor, office, postal code}, price?, bank, IBAN, SWIFT/BIC, item[{qty, price, description}]*/
   const [data, setData] = useState({});
   const [itemData, setItemData] = useState({});
-  const [items, setItems] = useState([]); //<------ TE QUEDASTE AQUI, IMPLEMENTA EL BOTON PARA CREAR ITEMS
+  const [items, setItems] = useState([]);
+  const inputs = [{name: 'descripcionItem', label:'Descripcion', tag:'textarea', type: 'textarea'}, {name: 'cantidadItem', label: 'Cantidad', tag:'input', type:'number'}, {name: 'precioItem', label: 'Precio', tag:'input', type:'number'}];
 
   const catchData = ({ target }) => {
     const { name, value } = target;
@@ -28,6 +29,7 @@ export function Home() {
     setItemData((state) => ({ ...state, [name]: value }));
   };
   const itemRegister = () => {
+    if(itemData.descripcionItem)
     setItems((state) => [
       ...state,
       {
@@ -186,48 +188,18 @@ export function Home() {
             <div className="items">
               <h2>Items</h2>
               <div className="row">
-                <div className="col col-lg-3">
-                  <h3>Item ID</h3>
-                  <input
-                    className="form-control"
-                    type="text"
-                    placeholder="8SFFSD93"
-                    aria-label="Item ID"
-                  />
-                </div>
-                <div class="col col-lg-3">
-                  <h3>Cantidad</h3>
-                  <input
-                    type="number"
-                    name="cantidadItem"
-                    min="1"
-                    max="15"
-                    onChange={catchItemData}
-                  />
-                </div>
-                <div class="col col-lg-3">
-                  <h3>Precio</h3>
-                  <input
-                    class="form-control"
-                    type="text"
-                    name="precioItem"
-                    placeholder="80"
-                    aria-label="Precio"
-                    onChange={catchItemData}
-                  />
-                </div>
-                <div class="row">
-                  <div class="col col-lg-3">
-                    <h3>Descipcion</h3>
-                    <textarea
-                      class="form-control"
-                      id="textArea"
-                      name="descripcionItem"
-                      rows="4"
-                      onChange={catchItemData}
-                    ></textarea>
-                  </div>
-                </div>
+                {inputs.map( ({ name, label, type }) => (
+                  <> {/*name: 'descripcionItem', label:'Descripcion', tag:'textarea', type: 'text'*/ }
+                    <div class="col col-lg-3">
+                      <h3>{label}</h3>
+                      <input
+                        type={type}
+                        name={name}
+                        label={label}
+                        onChange={catchItemData}/>
+                    </div>
+                  </>
+                ))}
               </div>
               {items?.map((item) => (
                 <>
