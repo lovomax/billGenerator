@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import TextField from 'material-ui/TextField';
 
 
+
 export function Home() {
   const navigate = useNavigate();
   const { bills, saveBills } = useBill();
@@ -21,16 +22,18 @@ export function Home() {
   const [data, setData] = useState({});
   const [itemData, setItemData] = useState({});
   const [items, setItems] = useState([]);
-  const inputs = [
+  var inputs = [
     {
       name: 'descripcionItem',
       label: 'Descripcion',
       tag: 'textarea',
       type: 'textarea',
+      error: false
     },
-    { name: 'cantidadItem', label: 'Cantidad', tag: 'input', type: 'number' },
-    { name: 'precioItem', label: 'Precio', tag: 'input', type: 'number' },
+    {name: 'cantidadItem', label: 'Cantidad', tag: 'input', type: 'number', error: false },
+    {name: 'precioItem', label: 'Precio', tag: 'input', type: 'number', error: false },
   ];
+  const defaulted = {descripcionItem: "", cantidadItem: "", precioItem: ""}
 
   const catchData = ({ target }) => {
     const { name, value } = target;
@@ -42,7 +45,18 @@ export function Home() {
     setItemData((state) => ({ ...state, [name]: value }));
   };
   const itemRegister = () => {
-    if (itemData.descripcionItem)
+     if ((itemData.descripcionItem === '' || itemData.cantidadItem === '' || itemData.precioItem === '') || Object.keys(itemData).length === 0){ 
+      for (var key in inputs) {
+        if (itemData[inputs[key].name] === "" || itemData[inputs[key].name] === null)
+        {
+          inputs[key].error=!inputs[key].error;
+          console.log(inputs[key].error)
+          console.log() 
+        } 
+        /* console.log(inputs[key]) */
+        
+      }
+     }  
       setItems((state) => [
         ...state,
         {
@@ -50,6 +64,7 @@ export function Home() {
           ...itemData,
         },
       ]);
+      setItemData(defaulted);
   };
   const itemUpdate = (target) => {
     const obj = { ...target, ...itemData };
@@ -58,14 +73,15 @@ export function Home() {
   };
   //Fin de manipulacion de items
   useEffect(() => {
-    console.log(bills);
-  }, [bills]);
-
+    console.log(inputs);
+  }, [inputs]);
+  
   return (
     <div>
       <header className="">
         <div className="row align-items-center justify-content-start">
           <div className="col">
+            <TextField id="outlined-required" label="Required" required/>
             <img className="logoHeader img-fluid" src="logo.png" />
           </div>
         </div>
@@ -201,16 +217,20 @@ export function Home() {
             <div className="items">
               <h2>Items</h2>
               <div className="row">
-                {inputs.map(({ name, label, type }) => (
+                {inputs.map(({ name, label, type, error }) => (
                   <>
                     {' '}
                     {/*name: 'descripcionItem', label:'Descripcion', tag:'textarea', type: 'text'*/}
                     <div className="col col-lg-3">
                       <h3>{label}</h3>
                       <TextField
+                        id="outline-basic"
+                        variant="outlined"
+                        error
                         type={type}
                         name={name}
                         label={label}
+                        value={itemData[name]}
                         onChange={catchItemData}
                       />
                     </div>
