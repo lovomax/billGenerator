@@ -1,7 +1,13 @@
 import React from 'react';
+import { render } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { useBill } from '../../context/AppContext';
 import { useState, useEffect } from 'react';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import TextField from 'material-ui/TextField';
+import Popover from 'material-ui/Popover';
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
 
 export function Home() {
   const navigate = useNavigate();
@@ -14,6 +20,7 @@ export function Home() {
   };
 
   /* bills: name, address{country, street, floor, office, postal code}, price?, bank, IBAN, SWIFT/BIC, item[{qty, price, description}]*/
+  const [state, setState] = useState();
   const [data, setData] = useState({});
   const [itemData, setItemData] = useState({});
   const [items, setItems] = useState([]);
@@ -48,11 +55,18 @@ export function Home() {
     console.log(bills);
   }, [bills]);
 
+
+
   return (
     <div>
       <header className="">
         <div className="row align-items-center justify-content-start">
           <div className="col">
+          <MuiThemeProvider>
+        <div>
+          <TextField />
+        </div>
+      </MuiThemeProvider>
             <img className="logoHeader img-fluid" src="logo.png" />
           </div>
         </div>
@@ -190,7 +204,7 @@ export function Home() {
               <div className="row">
                 {inputs.map( ({ name, label, type }) => (
                   <> {/*name: 'descripcionItem', label:'Descripcion', tag:'textarea', type: 'text'*/ }
-                    <div class="col col-lg-3">
+                    <div className="col col-lg-3">
                       <h3>{label}</h3>
                       <input
                         type={type}
