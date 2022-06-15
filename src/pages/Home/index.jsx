@@ -1,11 +1,9 @@
-import React from 'react';
-import { render } from 'react-dom';
-import { useNavigate } from 'react-router-dom';
-import { useBill } from '../../context/AppContext';
-import { useState, useEffect } from 'react';
-import TextField from '@mui/material/TextField';
-
-
+import React from "react";
+import { render } from "react-dom";
+import { useNavigate } from "react-router-dom";
+import { useBill } from "../../context/AppContext";
+import { useState, useEffect } from "react";
+import TextField from "@mui/material/TextField";
 
 export function Home() {
   const navigate = useNavigate();
@@ -14,7 +12,7 @@ export function Home() {
     const fullBill = { ...data, items };
     console.log(fullBill);
     saveBills(fullBill);
-    navigate('/bill');
+    navigate("/bill");
   };
 
   /* bills: name, address{country, street, floor, office, postal code}, price?, bank, IBAN, SWIFT/BIC, item[{qty, price, description}]*/
@@ -24,16 +22,28 @@ export function Home() {
   const [items, setItems] = useState([]);
   var inputs = [
     {
-      name: 'descripcionItem',
-      label: 'Descripcion',
-      tag: 'textarea',
-      type: 'textarea',
-      error: false
+      name: "descripcionItem",
+      label: "Descripcion",
+      tag: "textarea",
+      type: "textarea",
+      error: "false"
     },
-    {name: 'cantidadItem', label: 'Cantidad', tag: 'input', type: 'number', error: false },
-    {name: 'precioItem', label: 'Precio', tag: 'input', type: 'number', error: false },
+    {
+      name: "cantidadItem",
+      label: "Cantidad",
+      tag: "input",
+      type: "number",
+      error: "false"
+    },
+    {
+      name: "precioItem",
+      label: "Precio",
+      tag: "input",
+      type: "number",
+      error: "false"
+    }
   ];
-  const defaulted = {descripcionItem: "", cantidadItem: "", precioItem: ""}
+  const defaulted = { descripcionItem: "", cantidadItem: "", precioItem: "" };
 
   const catchData = ({ target }) => {
     const { name, value } = target;
@@ -45,43 +55,49 @@ export function Home() {
     setItemData((state) => ({ ...state, [name]: value }));
   };
   const itemRegister = () => {
-     if ((itemData.descripcionItem === '' || itemData.cantidadItem === '' || itemData.precioItem === '') || Object.keys(itemData).length === 0){ 
+    if (
+      itemData.descripcionItem === "" ||
+      itemData.cantidadItem === "" ||
+      itemData.precioItem === "" ||
+      Object.keys(itemData).length === 0
+    ) {
       for (var key in inputs) {
-        if (itemData[inputs[key].name] === "" || itemData[inputs[key].name] === null)
-        {
-          inputs[key].error=!inputs[key].error;
-          console.log(inputs[key].error)
-          console.log() 
-        } 
+        if (
+          itemData[inputs[key].name] === "" ||
+          itemData[inputs[key].name] === null
+        ) {
+          inputs[key].error = "true";
+        }
         /* console.log(inputs[key]) */
-        
       }
-     }  
+    } else {
       setItems((state) => [
         ...state,
         {
           key: items.length + 1,
-          ...itemData,
-        },
+          ...itemData
+        }
       ]);
-      setItemData(defaulted);
+    }
+
+    setItemData(defaulted);
   };
   const itemUpdate = (target) => {
     const obj = { ...target, ...itemData };
-    console.log(target);
+
     setItems(items.map((item) => (item?.key === obj?.key ? obj : item)));
   };
   //Fin de manipulacion de items
   useEffect(() => {
-    console.log(inputs);
-  }, [inputs]);
-  
+    console.log(itemData);
+  }, [itemData]);
+  var a;
   return (
     <div>
       <header className="">
         <div className="row align-items-center justify-content-start">
           <div className="col">
-            <TextField id="outlined-required" label="Required" required/>
+            <TextField id="outlined-required" label="Required" required />
             <img className="logoHeader img-fluid" src="logo.png" />
           </div>
         </div>
@@ -219,14 +235,14 @@ export function Home() {
               <div className="row">
                 {inputs.map(({ name, label, type, error }) => (
                   <>
-                    {' '}
+                    {" "}
                     {/*name: 'descripcionItem', label:'Descripcion', tag:'textarea', type: 'text'*/}
                     <div className="col col-lg-3">
                       <h3>{label}</h3>
                       <TextField
                         id="outline-basic"
                         variant="outlined"
-                        error
+                        error={(a = error === "true")}
                         type={type}
                         name={name}
                         label={label}
