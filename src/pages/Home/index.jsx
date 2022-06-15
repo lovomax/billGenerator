@@ -3,11 +3,8 @@ import { render } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { useBill } from '../../context/AppContext';
 import { useState, useEffect } from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import TextField from 'material-ui/TextField';
-import Popover from 'material-ui/Popover';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
+
 
 export function Home() {
   const navigate = useNavigate();
@@ -24,7 +21,16 @@ export function Home() {
   const [data, setData] = useState({});
   const [itemData, setItemData] = useState({});
   const [items, setItems] = useState([]);
-  const inputs = [{name: 'descripcionItem', label:'Descripcion', tag:'textarea', type: 'textarea'}, {name: 'cantidadItem', label: 'Cantidad', tag:'input', type:'number'}, {name: 'precioItem', label: 'Precio', tag:'input', type:'number'}];
+  const inputs = [
+    {
+      name: 'descripcionItem',
+      label: 'Descripcion',
+      tag: 'textarea',
+      type: 'textarea',
+    },
+    { name: 'cantidadItem', label: 'Cantidad', tag: 'input', type: 'number' },
+    { name: 'precioItem', label: 'Precio', tag: 'input', type: 'number' },
+  ];
 
   const catchData = ({ target }) => {
     const { name, value } = target;
@@ -36,14 +42,14 @@ export function Home() {
     setItemData((state) => ({ ...state, [name]: value }));
   };
   const itemRegister = () => {
-    if(itemData.descripcionItem)
-    setItems((state) => [
-      ...state,
-      {
-        key: items.length + 1,
-        ...itemData,
-      },
-    ]);
+    if (itemData.descripcionItem)
+      setItems((state) => [
+        ...state,
+        {
+          key: items.length + 1,
+          ...itemData,
+        },
+      ]);
   };
   const itemUpdate = (target) => {
     const obj = { ...target, ...itemData };
@@ -55,18 +61,11 @@ export function Home() {
     console.log(bills);
   }, [bills]);
 
-
-
   return (
     <div>
       <header className="">
         <div className="row align-items-center justify-content-start">
           <div className="col">
-          <MuiThemeProvider>
-        <div>
-          <TextField />
-        </div>
-      </MuiThemeProvider>
             <img className="logoHeader img-fluid" src="logo.png" />
           </div>
         </div>
@@ -202,15 +201,18 @@ export function Home() {
             <div className="items">
               <h2>Items</h2>
               <div className="row">
-                {inputs.map( ({ name, label, type }) => (
-                  <> {/*name: 'descripcionItem', label:'Descripcion', tag:'textarea', type: 'text'*/ }
+                {inputs.map(({ name, label, type }) => (
+                  <>
+                    {' '}
+                    {/*name: 'descripcionItem', label:'Descripcion', tag:'textarea', type: 'text'*/}
                     <div className="col col-lg-3">
                       <h3>{label}</h3>
-                      <input
+                      <TextField
                         type={type}
                         name={name}
                         label={label}
-                        onChange={catchItemData}/>
+                        onChange={catchItemData}
+                      />
                     </div>
                   </>
                 ))}
