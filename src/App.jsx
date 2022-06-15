@@ -1,4 +1,4 @@
-import react from 'react';
+import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Bill } from './pages/Bill';
 import { Home } from './pages/Home';
