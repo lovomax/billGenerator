@@ -20,7 +20,7 @@ export function Home() {
         navigate("/bill");
       }
   };
-
+ /**/
   /* bills: name, address{country, street, floor, office, postal code}, price?, bank, IBAN, SWIFT/BIC, item[{qty, price, description}]*/
   const [data, setData] = useState({});
   const [itemData, setItemData] = useState({});
