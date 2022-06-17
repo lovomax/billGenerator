@@ -7,7 +7,7 @@ export function Bill() {
   const total = () => {
     let total = 0;
     for (let i = 0; i < bills?.items?.length ?? 0; i++) {
-      total += bills?.items[i]?.precioItem ?? 0;
+      total += Number(bills?.items[i]?.precioItem ?? 0);
     }
     return total;
   };
@@ -21,15 +21,15 @@ export function Bill() {
         <div className="divInfoHeader">
           <div className="divInfoHeaderIN">
             <p className="infoHeader">Invoice Number: </p>{' '}
-            <p className="_INumber">AZ002</p>
+            <p className="_INumber">{bills.invoice}</p>
           </div>
           <div className="divInfoHeaderID">
             <p className="infoHeader">Invoice Date: </p>{' '}
-            <p className="_INumber">23/04/2022</p>
+            <p className="_INumber">{bills.indate}</p>
           </div>
           <div className="divInfoHeaderDD">
             <p className="infoHeader">Due Date: </p>{' '}
-            <p className="_INumber">31/04/2022</p>
+            <p className="_INumber">{bills.duedate}</p>
           </div>
         </div>
         <div className="hBorder"></div>

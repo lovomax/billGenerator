@@ -7,7 +7,7 @@ export function InputGroup(props)
     return(
         <>
             <h2>{title}</h2>
-            <div className="row">
+            <div style={{ display: 'flex', gap:10 }}className="row">
                 {inputs?.map(({name, label, type}) => (
                     <>
                         <div className="col col-lg-3">
