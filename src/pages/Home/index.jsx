@@ -4,43 +4,107 @@ import { useNavigate } from "react-router-dom";
 import { useBill } from "../../context/AppContext";
 import { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
+import { InputGroup } from "./components/inputGroup";
 
 export function Home() {
   const navigate = useNavigate();
   const { bills, saveBills } = useBill();
   const handleBills = async () => {
-    const fullBill = { ...data, items };
-    console.log(fullBill);
-    saveBills(fullBill);
-    navigate("/bill");
+
+      if (Object.keys(data).length && !!Object.values(data).filter(i => !i.length).length) {
+        setDataErrors(true);
+      } else {
+        const fullBill = { ...data, items };
+        console.log(fullBill);
+        saveBills(fullBill);
+        navigate("/bill");
+      }
   };
 
   /* bills: name, address{country, street, floor, office, postal code}, price?, bank, IBAN, SWIFT/BIC, item[{qty, price, description}]*/
-  const [state, setState] = useState();
   const [data, setData] = useState({});
   const [itemData, setItemData] = useState({});
   const [items, setItems] = useState([]);
-  var inputs = [
+  const [errors, setErrors] = useState(false);
+  const [dataErrors, setDataErrors] = useState(false);
+  const inputdata2 =[
+    {
+      name: 'nombre',
+      label: 'Nombre de la Empresa',
+      tag: 'input',
+      type: 'text'
+    }
+  ]
+  const iDataDir = [
+    {
+      name: 'calle',
+      label: 'Calle',
+      tag: 'input',
+      type: 'text'
+    },
+    {
+      name: 'piso',
+      label: 'Piso',
+      tag: 'input',
+      type: 'text'
+    },
+    {
+      name: 'oficina',
+      label: 'Oficina',
+      tag: 'input',
+      type: 'text'
+    },
+    {
+      name: 'pais',
+      label: 'Pais',
+      tag: 'input',
+      type: 'text'
+    },
+    {
+      name: 'postal',
+      label: 'Postal',
+      tag: 'input',
+      type: 'text'
+    }
+  ]
+  const inputdata = [
+    {
+      name: "banco",
+      label: "Banco",
+      tag: "input",
+      type: "text"
+    },
+    {
+      name: "iban",
+      label: "IBAN",
+      tag: "input",
+      type: "text"
+    },
+    {
+      name: "swift",
+      label: "SWIFT/BIC",
+      tag: "input",
+      type: "text"
+    }
+  ]
+  const inputs = [
     {
       name: "descripcionItem",
       label: "Descripcion",
       tag: "textarea",
-      type: "textarea",
-      error: "false"
+      type: "textarea"
     },
     {
       name: "cantidadItem",
       label: "Cantidad",
       tag: "input",
-      type: "number",
-      error: "false"
+      type: "number"
     },
     {
       name: "precioItem",
       label: "Precio",
       tag: "input",
-      type: "number",
-      error: "false"
+      type: "number"
     }
   ];
   const defaulted = { descripcionItem: "", cantidadItem: "", precioItem: "" };
@@ -56,20 +120,11 @@ export function Home() {
   };
   const itemRegister = () => {
     if (
-      itemData.descripcionItem === "" ||
-      itemData.cantidadItem === "" ||
-      itemData.precioItem === "" ||
-      Object.keys(itemData).length === 0
+      (itemData?.descripcionItem ?? '') === "" ||
+      (itemData?.cantidadItem ?? '') === "" ||
+      (itemData?.precioItem ?? '') === "" 
     ) {
-      for (var key in inputs) {
-        if (
-          itemData[inputs[key].name] === "" ||
-          itemData[inputs[key].name] === null
-        ) {
-          inputs[key].error = "true";
-        }
-        /* console.log(inputs[key]) */
-      }
+      setErrors(true);
     } else {
       setItems((state) => [
         ...state,
@@ -78,9 +133,11 @@ export function Home() {
           ...itemData
         }
       ]);
+      setErrors(false);
+      setItemData(defaulted);
     }
 
-    setItemData(defaulted);
+
   };
   const itemUpdate = (target) => {
     const obj = { ...target, ...itemData };
@@ -89,8 +146,8 @@ export function Home() {
   };
   //Fin de manipulacion de items
   useEffect(() => {
-    console.log(itemData);
-  }, [itemData]);
+    console.log(errors);
+  }, [errors]);
   var a;
   return (
     <div>
@@ -107,152 +164,18 @@ export function Home() {
         <h1 className="text-center">Datos de La Factura</h1>
         <div className="container-fluid">
           <div id="datosEmpresa">
-            <h2>Datos de la Empresa</h2>
-            <h3>Nombre de la empresa</h3>
-            <div className="row">
-              <div className="col col-lg-3">
-                <input
-                  className="form-control "
-                  type="text"
-                  name="nombre"
-                  placeholder="Tesla"
-                  aria-label="nombre de la empresa"
-                  onChange={catchData}
-                />
-              </div>
+            <div className="datosBasicos">
+              <InputGroup title="Datos de la Empresa" inputs={inputdata2} catchData={catchData} data={data} errors={dataErrors}/>
             </div>
-            <h3>Direccion</h3>
-            <div className="row">
-              <div className="col col-lg-3">
-                <h5>Calle</h5>
-                <input
-                  className="form-control"
-                  type="text"
-                  name="calle"
-                  placeholder="holmberg 4411"
-                  aria-label="Calle"
-                  onChange={catchData}
-                />
-              </div>
-              <div className="col col-lg-3">
-                <h5>Piso</h5>
-                <input
-                  className="form-control"
-                  type="text"
-                  name="piso"
-                  placeholder="5"
-                  aria-label="Piso"
-                  onChange={catchData}
-                />
-              </div>
-              <div className="col col-xl-3 col-lg-3">
-                <h5> Oficina </h5>
-                <input
-                  className="form-control"
-                  type="text"
-                  name="oficina"
-                  placeholder="C"
-                  aria-label="Oficina"
-                  onChange={catchData}
-                />
-              </div>
-              <div className="row">
-                <div className="col col-lg-3">
-                  <h5>Pais</h5>
-                  <input
-                    className="form-control "
-                    type="text"
-                    name="pais"
-                    placeholder="España"
-                    aria-label="Pais"
-                    onChange={catchData}
-                  />
-                </div>
-                <div className="col col-lg-3">
-                  <h5>Codigo postal</h5>
-                  <input
-                    className="form-control "
-                    type="text"
-                    name="postal"
-                    placeholder="7067"
-                    aria-label="Codigo Postal"
-                    onChange={catchData}
-                  />
-                </div>
-              </div>
+            <div className="datosDireccion">
+              <InputGroup title="Dirección" inputs={iDataDir} catchData={catchData} data={data} errors={dataErrors}/>
             </div>
-            <div id="datosPago">
-              <h2>Datos del Pago</h2>
-              <div className="row">
-                <div className="col col-lg-3">
-                  <h3>Monto</h3>
-                  <input
-                    className="form-control"
-                    type="text"
-                    placeholder="99999"
-                    aria-label="monto"
-                  />
-                </div>
-                <div className="col col-lg-3">
-                  <h3>Banco</h3>
-                  <input
-                    className="form-control"
-                    type="text"
-                    name="banco"
-                    placeholder="bdv"
-                    aria-label="Banco"
-                    onChange={catchData}
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <div className="col col-lg-3">
-                  <h3>IBAN</h3>
-                  <input
-                    className="form-control"
-                    type="text"
-                    name="iban"
-                    placeholder="sample text"
-                    aria-label="IBAN"
-                    onChange={catchData}
-                  />
-                </div>
-                <div className="col col-lg-3">
-                  <h3>SWIFT/BIC</h3>
-                  <input
-                    className="form-control"
-                    type="text"
-                    name="swift"
-                    placeholder="sample text"
-                    aria-label="SWIFT/BIC"
-                    onChange={catchData}
-                  />
-                </div>
-              </div>
+            <div className="datosPago">
+              <InputGroup title="Datos del Pago" inputs={inputdata} catchData={catchData} data={data} errors={dataErrors}/>
             </div>
             <div className="items">
-              <h2>Items</h2>
-              <div className="row">
-                {inputs.map(({ name, label, type, error }) => (
-                  <>
-                    {" "}
-                    {/*name: 'descripcionItem', label:'Descripcion', tag:'textarea', type: 'text'*/}
-                    <div className="col col-lg-3">
-                      <h3>{label}</h3>
-                      <TextField
-                        id="outline-basic"
-                        variant="outlined"
-                        error={(a = error === "true")}
-                        type={type}
-                        name={name}
-                        label={label}
-                        value={itemData[name]}
-                        onChange={catchItemData}
-                      />
-                    </div>
-                  </>
-                ))}
-              </div>
+              <InputGroup title="Items" inputs={inputs} catchData={catchItemData} data={itemData} errors={errors}/>
+
               {items?.map((item) => (
                 <>
                   <p>{item.key}</p>
