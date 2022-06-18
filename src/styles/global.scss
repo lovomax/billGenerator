@@ -1,0 +1,29 @@
+:root {
+  --black-800: #272a30;
+  --orange-900: #f65910;
+  --white: #fff;
+  --grey-300: #c6c6c6;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
+button {
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 1100px) {
+  html {
+    font-size: 93.5%;
+  }
+}
+
+@media only screen and (max-width: 799px) {
+  html {
+    font-size: 87.75%;
+  }
+}

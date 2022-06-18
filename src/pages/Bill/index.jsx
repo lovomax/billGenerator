@@ -1,5 +1,8 @@
 import React from 'react';
+import logo from '../../assets/logo.svg';
 import { useBill } from '../../context/AppContext';
+
+import styles from './header.module.scss';
 
 export function Bill() {
   const { bills } = useBill();
@@ -12,89 +15,107 @@ export function Bill() {
     return total;
   };
   const finalPrecio = total();
+
+  const formatValue = (value) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+    }).format(value);
+  };
   return (
-    <div>
-      <div className="header">
-        <div className="divLogoHeader">
-          <img className="logoHeader" src="logo.png" />
-        </div>
-        <div className="divInfoHeader">
-          <div className="divInfoHeaderIN">
-            <p className="infoHeader">Invoice Number: </p>{' '}
-            <p className="_INumber">{bills.invoice}</p>
-          </div>
-          <div className="divInfoHeaderID">
-            <p className="infoHeader">Invoice Date: </p>{' '}
-            <p className="_INumber">{bills.indate}</p>
-          </div>
-          <div className="divInfoHeaderDD">
-            <p className="infoHeader">Due Date: </p>{' '}
-            <p className="_INumber">{bills.duedate}</p>
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <div>
+          <img src={logo} />
+          <div className='divInfoHeader'>
+            <div className='divInfoHeaderIN'>
+              <p className='infoHeader'>Invoice Number: {bills.invoice}</p>
+            </div>
+            <div className='divInfoHeaderID'>
+              <p className='infoHeader'>Invoice Date: {bills.indate}</p>
+            </div>
+            <div className='divInfoHeaderDD'>
+              <p className='infoHeader'>Due Date: {bills.duedate}</p>
+            </div>
           </div>
         </div>
-        <div className="hBorder"></div>
-        <div className="CompanyDetails">
-          <div className="divBillTo">
-            <p id="billto">Bill to: </p>
-            <p id="cname" className="_CompanyName">
-              {bills.nombre}
-            </p>
-            <p id="caddress" className="_CompanyAddress1">
-              {bills.calle + ' ' + bills.piso + ' ' + bills.oficina}
-            </p>
-            <p id="caddress2" className="_CompanyAddress2">
-              {'Aquí puse el codigo postal xD: ' + bills.postal}
-            </p>
-            <p id="cpais" className="_CompanyCountry">
-              {bills.pais}
-            </p>
-          </div>
-          <div className="divPaymentDetails">
-            <p id="paydet">Payment Details: </p>
-            <p id="bname" className="_BankName">
-              <b>BANK: </b> {bills.banco}
-            </p>
-            <p id="iban" className="_IBAN">
-              <b>IBAN: </b> {bills.iban}
-            </p>
-            <p id="swift" className="_SWIFT">
-              <b>SWIFT/BIC: </b> {bills.swift}
-            </p>
-          </div>
+      </div>
+      <div className={styles.companyDetails}>
+        <div className={styles.paymentDetails}>
+          <strong>Bill to: </strong>
+          <p>{bills.nombre || 'Ricardo Arreaza'}</p>
+          <p>
+            {bills.calle ||
+              'Calle Pedro Camejo' + ' ' + bills.piso ||
+              '9' + ' ' + bills.oficina ||
+              '20'}
+          </p>
+          <p>{bills.postal || '50970-020'}</p>
+          <p id='cpais' className='_CompanyCountry'>
+            {bills.pais || 'Venezuela'}
+          </p>
         </div>
-        <section id="tabla">
-          <table>
-            <tr className="table-row-dark">
-              <th className="td-dark-spacing">Item</th>
-              <th className="td-dark-spacing">Description</th>
-              <th className="td-dark-spacing">Qty</th>
-              <th className="td-dark-spacing">Price</th>
+        <div className={styles.paymentDetails}>
+          <strong>Payment Details: </strong>
+          <p id='bname' className='_BankName'>
+            <strong>BANK: </strong> {bills.banco}
+          </p>
+          <p id='iban' className='_IBAN'>
+            <strong>IBAN: </strong> {bills.iban}
+          </p>
+          <p id='swift' className='_SWIFT'>
+            <strong>SWIFT/BIC: </strong> {bills.swift}
+          </p>
+        </div>
+      </div>
+      <section>
+        <table className={styles.tableContent}>
+          <thead>
+            <tr className={styles.tableHeader}>
+              <th className='td-dark-spacing'>
+                <strong>Item</strong>
+              </th>
+              <th className='td-dark-spacing'>
+                <strong>Description</strong>
+              </th>
+              <th className='td-dark-spacing'>
+                <strong>Qty</strong>
+              </th>
+              <th className='td-dark-spacing'>
+                <strong>Price</strong>
+              </th>
             </tr>
+          </thead>
+          <tbody>
             {bills.items?.map((item) => (
               <>
-                <tr id="middle-row">
-                  <th className="td-spacing td-edge">
-                    {bills.items.indexOf(item) + 1}
-                  </th>
-                  <td className="td-spacing">{item.descripcionItem}</td>
-                  <th className="td-spacing">{item.cantidadItem}</th>
-                  <th className="td-spacing td-edge">{item.precioItem}$</th>
+                <tr id='middle-row'>
+                  <td className='td-spacing td-edge'>
+                    {/* {bills.items.indexOf(item) + 1} */}1
+                  </td>
+                  <td className='td-spacing'>{item.descripcionItem}</td>
+                  <td className='td-spacing'>{item.cantidadItem}</td>
+                  <td className='td-spacing td-edge'>
+                    {formatValue(Number(item.precioItem))}
+                  </td>
                 </tr>
               </>
             ))}
-            <tr className="table-row-dark">
+          </tbody>
+          <tfoot>
+            <tr className='dark'>
               <td></td>
               <td></td>
-              <td className="td-dark-spacing">total</td>
-              <td className="td-dark-spacing">{finalPrecio}$</td>
+              <td className='td-dark-spacing'>Total</td>
+              <td className='td-dark-spacing'>{formatValue(finalPrecio)}</td>
             </tr>
-          </table>
-        </section>
-        <footer>
-          <div id="fBorder1"></div>
-          <div id="fBorder2"></div>
-        </footer>
-      </div>
+          </tfoot>
+        </table>
+      </section>
+      <footer className={styles.footer}>
+        <div id='fBorder1'></div>
+        <div id='fBorder2'></div>
+      </footer>
     </div>
   );
 }
