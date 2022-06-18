@@ -12,7 +12,7 @@ import Collapse from '@mui/material/Collapse';
 import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
 
-import { InputGroup } from './components/inputGroup';
+import { InputGroup } from '../../components/inputGroup';
 import {
   inputdata2,
   iDataDir,
@@ -21,7 +21,7 @@ import {
   defaulted,
   defaultData,
 } from './utils/mock.js';
-import { TableGroup } from './components/tableGroup';
+import { TableGroup } from '../../components/tableGroup';
 
 export function Home() {
   const navigate = useNavigate();
