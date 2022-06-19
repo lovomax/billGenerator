@@ -20,8 +20,11 @@ import {
   inputs,
   defaulted,
   defaultData,
-} from './utils/mock.js';
+} from '../../utils/mock.js';
 import { TableGroup } from '../../components/tableGroup';
+
+import styles from './home.module.scss';
+import logo from '../../assets/logo.svg';
 
 export function Home() {
   const navigate = useNavigate();
@@ -34,7 +37,7 @@ export function Home() {
       ) {
         setDataErrors(true);
       } else {
-        const fullBill = { ...data, items, indate: fecha };
+        const fullBill = { ...data, items, indate: fecha, duedate: dueFecha };
         console.log(fullBill);
         saveBills(fullBill);
         navigate('/bill');
@@ -46,19 +49,26 @@ export function Home() {
   /**/
   /* bills: name, address{country, street, floor, office, postal code}, price?, bank, IBAN, SWIFT/BIC, item[{qty, price, description}]*/
   const [data, setData] = useState({ ...defaultData });
-  const [itemUpdates, setItemUpdates] = useState({});
-  const [itemData, setItemData] = useState({});
+  const [itemUpdates, setItemUpdates] = useState({ ...defaulted });
+  const [itemData, setItemData] = useState({...defaulted});
   const [items, setItems] = useState([]);
   const [errors, setErrors] = useState(false);
   const [errorsUpdate, setErrorsUpdate] = useState(false);
   const [dataErrors, setDataErrors] = useState(false);
   const [open, setOpen] = useState();
   const [alert, setAlert] = useState(false);
+  const [dueFecha, setDueFecha] = useState(new Date())
+
   var hoy = new Date(),
     fecha =
       hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear();
-
+  const fechaData = (target) =>
+  {
+    console.log(target)
+    setDueFecha(target);
+  }
   const catchData = ({ target }) => {
+    console.log(target);
     const { name, value } = target;
     if (
       !Number(value[value.length - 1]) ||
@@ -117,11 +127,11 @@ export function Home() {
   };
   //Fin de manipulacion de items
   useEffect(() => {
-    console.log(alert);
-  }, [alert]);
+    console.log(data);
+  }, [data]);
 
   return (
-    <div>
+    <div className={styles.contenedor}>
       {alert && (
         <>
           <Collapse in={alert}>
@@ -150,15 +160,15 @@ export function Home() {
         <div className="row align-items-center justify-content-start">
           <div className="col">
             {/* <TextField id="outlined-required" label="Required" required /> */}
-            <img className="logoHeader img-fluid" src="logo.png" />
+            <img src={logo} />
           </div>
         </div>
       </header>
       <div className="hBorder"></div>
-      <section>
-        <h1 className="text-center">Datos de La Factura</h1>
+      <section className={styles.seccion}>
+        <h1 className={styles.titulo}>Datos de La Factura</h1>
         <div className="container-fluid">
-          <div id="datosEmpresa">
+          <div className={styles.datos}>
             <div className="datosBasicos">
               <InputGroup
                 title="Datos Básicos"
@@ -166,9 +176,11 @@ export function Home() {
                 catchData={catchData}
                 data={data}
                 errors={dataErrors}
+                dueFecha={dueFecha}
+                fechaData={fechaData}
               />
             </div>
-            <div className="datosDireccion">
+            <div className={styles.datos}>
               <InputGroup
                 title="Dirección"
                 inputs={iDataDir}
@@ -177,7 +189,7 @@ export function Home() {
                 errors={dataErrors}
               />
             </div>
-            <div className="datosPago">
+            <div className={styles.datos}>
               <InputGroup
                 title="Datos del Pago"
                 inputs={inputdata}
@@ -186,7 +198,7 @@ export function Home() {
                 errors={dataErrors}
               />
             </div>
-            <div className="items">
+            <div className={styles.datos}>
               <InputGroup
                 title="Items"
                 inputs={inputs}
@@ -194,6 +206,15 @@ export function Home() {
                 data={itemData}
                 errors={errors}
               />
+            
+            <div className="botonsito">
+              <button id="addItem" className="downBtn" onClick={itemRegister}>
+                Añadir Item
+              </button>
+              <button className="downBtn" onClick={handleBills}>
+                Generar Factura
+              </button>
+            </div>
 
               <TableGroup
                 items={items}
@@ -207,14 +228,6 @@ export function Home() {
                 errors={errorsUpdate}
               />
 
-              <div className="botonsito">
-                <button id="addItem" className="downBtn" onClick={itemRegister}>
-                  Añadir Item
-                </button>
-                <button className="downBtn" onClick={handleBills}>
-                  Generar Factura
-                </button>
-              </div>
             </div>
           </div>
         </div>

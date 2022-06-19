@@ -2,7 +2,7 @@ import React from 'react';
 import logo from '../../assets/logo.svg';
 import { useBill } from '../../context/AppContext';
 
-import styles from './header.module.scss';
+import styles from './bill.module.scss';
 
 export function Bill() {
   const { bills } = useBill();
@@ -10,7 +10,7 @@ export function Bill() {
   const total = () => {
     let total = 0;
     for (let i = 0; i < bills?.items?.length ?? 0; i++) {
-      total += Number(bills?.items[i]?.precioItem ?? 0);
+      total += Number((bills?.items[i]?.precioItem) ?? 0) * Number((bills?.items[i]?.cantidadItem) ?? 1);
     }
     return total;
   };
@@ -35,7 +35,7 @@ export function Bill() {
               <p className='infoHeader'>Invoice Date: {bills.indate}</p>
             </div>
             <div className='divInfoHeaderDD'>
-              <p className='infoHeader'>Due Date: {bills.duedate}</p>
+              <p className='infoHeader'>Due Date: {(bills?.duedate?.getDate() + '/' + (bills?.duedate?.getMonth() + 1) + '/' + bills?.duedate?.getFullYear())}</p>
             </div>
           </div>
         </div>
@@ -87,16 +87,16 @@ export function Bill() {
             </tr>
           </thead>
           <tbody>
-            {bills.items?.map((item) => (
+            {bills.items?.map((item, index) => (
               <>
-                <tr id='middle-row'>
+                <tr id='middle-row' key={index}>
                   <td className='td-spacing td-edge'>
-                    {/* {bills.items.indexOf(item) + 1} */}1
+                    {index + 1}
                   </td>
                   <td className='td-spacing'>{item.descripcionItem}</td>
                   <td className='td-spacing'>{item.cantidadItem}</td>
                   <td className='td-spacing td-edge'>
-                    {formatValue(Number(item.precioItem))}
+                    {formatValue(Number(item.precioItem) * Number(item.cantidadItem))}
                   </td>
                 </tr>
               </>
