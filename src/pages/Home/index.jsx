@@ -68,7 +68,6 @@ export function Home() {
     setDueFecha(target);
   }
   const catchData = ({ target }) => {
-    console.log(target);
     const { name, value } = target;
     if (
       !Number(value[value.length - 1]) ||
