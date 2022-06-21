@@ -11,12 +11,10 @@ import Select from '@mui/material/Select';
 
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
-import { paises } from '../utils/mock'
-
 import styles from '../pages/Home/home.module.scss'
 
 export function InputGroup(props) {
-  const { title, inputs, catchData, data, errors, variant, dueFecha, fechaData } = props;
+  const { title, inputs, catchData, data, errors, variant, dueFecha, fechaData, lista } = props;
   return (
     <>
       {title && (
@@ -29,21 +27,19 @@ export function InputGroup(props) {
             <div key={name}>
               {tag === 'select' && variant === undefined && (
               <FormControl variant="outlined" sx={{ minWidth: 120 }}>
-                <InputLabel id="demo-simple-select-outlined-label">Paises</InputLabel>
+                <InputLabel id="demo-simple-select-outlined-label">{label}</InputLabel>
                 <Select
                   labelId="demo-simple-select-helper-label"
                   id="demo-simple-select-helper"
                    value={data[name]} 
-                   label="Paises"
+                   label={label}
                    name={name}
                    onChange={catchData} 
                    error={!data[name]?.trim()?.length && errors}
                 >
-                 {/*  {paises.map(nacion => (
-                    <MenuItem value={nacion}>{nacion}</MenuItem>
-                  ))}  */}
-                  <MenuItem value="20">20</MenuItem>
-                  <MenuItem value="30">30</MenuItem>
+                  {lista.map(miembro => (
+                    <MenuItem value={miembro}>{miembro}</MenuItem>
+                  ))}  
 
                 </Select>
               </FormControl>

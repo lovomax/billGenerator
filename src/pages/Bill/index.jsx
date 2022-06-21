@@ -2,21 +2,30 @@ import React, {useRef} from 'react';
 import logo from '../../assets/logo.svg';
 import { useBill } from '../../context/AppContext';
 
-import Pdf from "react-to-pdf";
-const ref = React.createRef();
-const options = {
-  orientation: 'landscape',
-  unit: 'in',
-};
-
-import { PDFExport } from '@progress/kendo-react-pdf';
-
-import html2canvas from 'html2canvas';
-import {jsPDF} from 'jspdf';
+import ReactToPrint from 'react-to-print';
 
 import styles from './bill.module.scss';
 
 export function Bill() {
+  /*React to print*/
+
+  const componentRef = React.useRef(null);
+  const reactToPrintContent = React.useCallback(() => {
+    return componentRef.current;
+  }, [componentRef.current]);
+
+  const reactToPrintTrigger = React.useCallback(() => {
+    // NOTE: could just as easily return <SomeComponent />. Do NOT pass an `onClick` prop
+    // to the root node of the returned component as it will be overwritten.
+
+    // Bad: the `onClick` here will be overwritten by `react-to-print`
+    // return <button onClick={() => alert('This will not work')}>Print this out!</button>;
+
+    // Good
+    return <button>Print using a Functional Component</button>;
+  }, []);
+
+  /*React to print end */
   const { bills } = useBill();
 
   const total = () => {
@@ -31,50 +40,21 @@ export function Bill() {
   const formatValue = (value) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'USD',
+      currency: bills?.moneda ?? "EUR",
     }).format(value);
   };
-  const pdfExportComponent = useRef(null);
-  const handleExportWithComponent = (event) =>
-  {
-    pdfExportComponent.current.save();
-  }
 
-  const printDocument = () => {
-    const input = document.getElementById('divToPrint');
-    html2canvas(input)
-      .then((canvas) => {
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF({
-          orientation: 'landscape',
-          unit: 'px',
-          format: [Number(canvas.width), Number(canvas.height)]
-        });
-
-        const imgProps= pdf.getImageProperties(imgData);
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-        pdf.addImage(imgData, 'JPEG', 0, 0, canvas.width, canvas.height);
-        // pdf.output('dataurlnewwindow');
-         pdf.save("download.pdf"); 
-      })
-    ;
-  }
   
   /*_container_fy0c3_1*/
   return (
     <>
-     <Pdf options={options} targetRef={ref} scale={0.89} filename={new Date().getDate() + (new Date().getMonth() + 1) + new Date().getFullYear() + bills.nombre +".pdf"}>
-      {({ toPdf }) => <button onClick={toPdf}>Generate Pdf</button>}
-    </Pdf> *
-    <PDFExport 
-    fileName="jeje.pdf"
-    title=""
-    subject=""
-    keywords=""
-    ref={pdfExportComponent}>
-        <div ref={ref} className={styles.container} id='divToPrint'>
+      <ReactToPrint
+        content={reactToPrintContent}
+        documentTitle="AwesomeFileName.pdf"
+        trigger={reactToPrintTrigger}
+        style={{ fontWeight: 'bold' }}
+      />
+        <div ref={componentRef} className={styles.container} id='divToPrint'>
           <div className={styles.header}>
             <div>
               <img src={logo} />
@@ -160,22 +140,20 @@ export function Bill() {
               </tfoot>
             </table>
           </section>
-          {(bills?.items?.length ?? 0) < 5 && (
+
             <footer className={styles.footerSmall}>
               <div id='fBorder1'></div>
               <div id='fBorder2'></div>
             </footer>    
-          )}
-          {bills?.items?.length > 5 && (
+
+{/*           {bills?.items?.length > 5 && (
             <footer className={styles.footer}>
               <div id='fBorder1'></div>
               <div id='fBorder2'></div>
             </footer>
-          )}
+          )} */}
 
         </div>
-    </PDFExport>
-    <button onClick={printDocument}>AAAAAAAAAAAAAAAAAAA</button>
     </>
   );
 }

@@ -9,6 +9,7 @@ export const defaultData = {
   banco: '',
   iban: '',
   swift: '',
+  moneda: ''
 };
 export const defaulted = {
   descripcionItem: '',
@@ -86,6 +87,12 @@ export const inputdata = [
     tag: 'input',
     type: 'text',
   },
+  {
+	name: 'moneda',
+	label: 'Currency',
+	tag: 'select',
+	type: 'text'
+  }
 ];
 export const inputs = [
   {
@@ -107,6 +114,10 @@ export const inputs = [
     type: 'number',
   },
 ];
+export const moneda = [
+	"USD",
+	"EUR"
+]
 export const paises = [
 	"Afghanistan",
 	"Albania",

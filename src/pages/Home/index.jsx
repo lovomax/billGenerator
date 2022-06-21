@@ -22,6 +22,7 @@ import {
   defaultData,
 } from '../../utils/mock.js';
 import { TableGroup } from '../../components/tableGroup';
+import { paises, moneda } from '../../utils/mock'
 
 import styles from './home.module.scss';
 import logo from '../../assets/logo.svg';
@@ -47,7 +48,7 @@ export function Home() {
     }
   };
   /**/
-  /* bills: name, address{country, street, floor, office, postal code}, price?, bank, IBAN, SWIFT/BIC, item[{qty, price, description}]*/
+  /*'EUR' bills: name, address{country, street, floor, office, postal code}, price?, bank, IBAN, SWIFT/BIC, item[{qty, price, description}]*/
   const [data, setData] = useState({ ...defaultData });
   const [itemUpdates, setItemUpdates] = useState({ ...defaulted });
   const [itemData, setItemData] = useState({...defaulted});
@@ -182,6 +183,7 @@ export function Home() {
             <div className={styles.datos}>
               <InputGroup
                 title="Dirección"
+                lista={paises}
                 inputs={iDataDir}
                 catchData={catchData}
                 data={data}
@@ -191,6 +193,7 @@ export function Home() {
             <div className={styles.datos}>
               <InputGroup
                 title="Datos del Pago"
+                lista={moneda}
                 inputs={inputdata}
                 catchData={catchData}
                 data={data}
