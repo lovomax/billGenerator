@@ -25,7 +25,7 @@ export function TableGroup(props) {
     <>
       {items.length > 0 && (
         <>
-          <TableContainer component={Paper} sx={{ maxHeight: 200 }}>
+          <TableContainer component={Paper} sx={{ maxHeight: 400 }}>
             <Table stickyHeader>
               <TableHead>
                 <TableRow>

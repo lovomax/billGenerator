@@ -146,7 +146,12 @@ export function Bill() {
               <div id='fBorder2'></div>
             </footer>    
 
-{/*           {bills?.items?.length > 5 && (
+{/*           
+            <footer className={styles.footer}>
+              <div className={styles.fBorder1}></div>
+              <div className={styles.fBorder2}></div>
+            </footer>   
+          {bills?.items?.length > 5 && (
             <footer className={styles.footer}>
               <div id='fBorder1'></div>
               <div id='fBorder2'></div>

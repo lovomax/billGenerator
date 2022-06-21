@@ -4,6 +4,9 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import Button from '@mui/material/Button';
+import DeleteIcon from '@mui/icons-material/Delete';
+import UpdateIcon from '@mui/icons-material/Update';
+import SendIcon from '@mui/icons-material/Send';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -53,8 +56,12 @@ export function CollapseTable (props)
                             <Table size="small">
                               <TableBody>
                                 <TableCell>
-                                  <button
+                                  <Button
+                                    variant="contained"
+                                    color="error"
                                     className="downBtn"
+                                    startIcon={<DeleteIcon />}
+                                    
                                     onClick={() => {
                                       setItems(() =>
                                         items.filter(
@@ -63,18 +70,20 @@ export function CollapseTable (props)
                                       );
                                     }}
                                   >
-                                    Borrar Item
-                                  </button>
+                                    Borrar
+                                  </Button>
                                 </TableCell>
                                 <TableCell>
-                                  <button
+                                  <Button
+                                    variant="contained"
+                                    startIcon={<UpdateIcon />}
                                     className="downBtn"
                                     onClick={() => {
                                       itemUpdate(item);
                                     }}
                                   >
-                                    Editar Item
-                                  </button>
+                                    Actualizar
+                                  </Button>
                                 </TableCell>
                                 <TableCell>
                                   <InputGroup

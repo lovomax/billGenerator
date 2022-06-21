@@ -131,24 +131,6 @@ section {
   margin: auto;
 }
 
-.footer {
-  width: 100%;
-  height: 40px;
-  background-color: var(--orange-900);
-  position: relative;
-  bottom: 0;
-/*   transform: translateY(200%); */
-
-  &::after {
-    content: '';
-    background-color: var(--black-800);
-    width: 100%;
-    height: 40%;
-    position: absolute;
-    z-index: 99;
-    bottom: 0;
-  }
-}
 .footerSmall {
   width: 100%;
   height: 40px;
@@ -166,4 +148,23 @@ section {
     z-index: 99;
     bottom: 0;
   }
+}
+
+.footer{
+
+  bottom: 0;
+  width: 100%;
+  color: white;    
+}
+
+.fBorder1{
+  background-color: #f65910;
+  height: 2rem;
+  margin: 0;
+}
+
+.fBorder2{
+  background-color: #272a30;
+  height: 1rem;
+  margin: 0;
 }

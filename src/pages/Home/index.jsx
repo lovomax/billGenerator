@@ -6,11 +6,14 @@ import { useState, useEffect } from 'react';
 
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import Alert from '@mui/material/Alert';
+import CreateIcon from '@mui/icons-material/Create';
 import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 
 import { InputGroup } from '../../components/inputGroup';
 import {
@@ -39,7 +42,6 @@ export function Home() {
         setDataErrors(true);
       } else {
         const fullBill = { ...data, items, indate: fecha, duedate: dueFecha };
-        console.log(fullBill);
         saveBills(fullBill);
         navigate('/bill');
       }
@@ -65,7 +67,6 @@ export function Home() {
       hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear();
   const fechaData = (target) =>
   {
-    console.log(target)
     setDueFecha(target);
   }
   const catchData = ({ target }) => {
@@ -126,9 +127,7 @@ export function Home() {
     }
   };
   //Fin de manipulacion de items
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+
 
   return (
     <div className={styles.contenedor}>
@@ -209,14 +208,14 @@ export function Home() {
                 errors={errors}
               />
             
-            <div className="botonsito">
-              <button id="addItem" className="downBtn" onClick={itemRegister}>
+            <Stack spacing={2} direction="row" sx={{margin:'auto', marginTop: '1rem', marginBottom: '1rem'}}>
+              <Button variant="outlined" startIcon={<AddOutlinedIcon />}id="addItem" className="downBtn" onClick={itemRegister}>
                 Añadir Item
-              </button>
-              <button className="downBtn" onClick={handleBills}>
+              </Button>
+              <Button variant="contained" startIcon={<CreateIcon />} className="downBtn" onClick={handleBills}>
                 Generar Factura
-              </button>
-            </div>
+              </Button>
+            </Stack>
 
               <TableGroup
                 items={items}
