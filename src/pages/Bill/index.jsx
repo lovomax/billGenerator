@@ -76,7 +76,7 @@ export function Bill() {
               <strong>Bill to: </strong>
               <p>{bills.nombre || 'Ricardo Arreaza'}</p>
               <p>
-                {bills.calle  + ' ' + bills.piso  + ' ' + bills.oficina}
+                {(bills?.calle ?? '')  + ' ' + (bills?.piso ?? '')  + ' ' + (bills?.oficina ?? '')}
               </p>
               <p>{bills.postal || '50970-020'}</p>
               <p id='cpais' className='_CompanyCountry'>

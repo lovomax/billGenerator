@@ -23,6 +23,7 @@ import {
   inputs,
   defaulted,
   defaultData,
+  defaultDirData
 } from '../../utils/mock.js';
 import { TableGroup } from '../../components/tableGroup';
 import { paises, moneda } from '../../utils/mock'
@@ -52,6 +53,7 @@ export function Home() {
   /**/
   /*'EUR' bills: name, address{country, street, floor, office, postal code}, price?, bank, IBAN, SWIFT/BIC, item[{qty, price, description}]*/
   const [data, setData] = useState({ ...defaultData });
+  const [direccion, setDireccion] = useState({...defaultDirData})
   const [itemUpdates, setItemUpdates] = useState({ ...defaulted });
   const [itemData, setItemData] = useState({...defaulted});
   const [items, setItems] = useState([]);
@@ -73,10 +75,6 @@ export function Home() {
     const { name, value } = target;
     if (
       !Number(value[value.length - 1]) ||
-      name === 'calle' ||
-      name === 'piso' ||
-      name === 'oficina' ||
-      name === 'postal' ||
       name === 'duedate' ||
       name === 'invoice' ||
       name === 'iban'
@@ -84,6 +82,10 @@ export function Home() {
       setData((state) => ({ ...state, [name]: value }));
     }
   };
+  const catchDirData = ({target}) => {
+    const { name, value } = target;
+    setDireccion((state) => ({...state, [name]: value}))
+  }
   //REPETICION DE CODIGO, PREGUNTAR A JOSE COMO EVITAR ESTA PARTE
   const catchItemData = ({ target }) => {
     const { name, value } = target;
@@ -184,9 +186,8 @@ export function Home() {
                 title="Dirección"
                 lista={paises}
                 inputs={iDataDir}
-                catchData={catchData}
-                data={data}
-                errors={dataErrors}
+                catchData={catchDirData}
+                data={direccion}
               />
             </div>
             <div className={styles.datos}>

@@ -1,16 +1,19 @@
 
 export const defaultData = {
   nombre: '',
-  calle: '',
-  piso: '',
-  oficina: '',
-  pais: '',
-  postal: '',
+
   banco: '',
   iban: '',
   swift: '',
   moneda: ''
 };
+export const defaultDirData = {
+	calle: '',
+	piso: '',
+	oficina: '',
+	pais: '',
+	postal: ''
+}
 export const defaulted = {
   descripcionItem: '',
   cantidadItem: '',
