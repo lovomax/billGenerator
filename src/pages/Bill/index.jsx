@@ -1,12 +1,16 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import logo from '../../assets/logo.svg';
 import { useBill } from '../../context/AppContext';
+
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 
 import ReactToPrint from 'react-to-print';
 
 import styles from './bill.module.scss';
 
 export function Bill() {
+  const [ver, setVer] = useState(false);
   /*React to print*/
 
   const componentRef = React.useRef(null);
@@ -22,7 +26,7 @@ export function Bill() {
     // return <button onClick={() => alert('This will not work')}>Print this out!</button>;
 
     // Good
-    return <button>Print using a Functional Component</button>;
+    return <Button color="success"><strong>Imprimir PDF</strong></Button>;
   }, []);
 
   /*React to print end */
@@ -48,12 +52,19 @@ export function Bill() {
   /*_container_fy0c3_1*/
   return (
     <>
-      <ReactToPrint
-        content={reactToPrintContent}
-        documentTitle="AwesomeFileName.pdf"
-        trigger={reactToPrintTrigger}
-        style={{ fontWeight: 'bold' }}
-      />
+      <Stack  sx={{display: 'flex', margin:'auto', alignItems: 'center', paddingTop: '1rem', paddingBottom: '1rem', backgroundColor: '#272a30', width: '100vw'}}>
+        {ver && (
+          <ReactToPrint
+            content={reactToPrintContent}
+            documentTitle={"Invoice_"+bills.nombre+"_8visual_"+(bills?.duedate?.getDate() + '-' + (bills?.duedate?.getMonth() + 1) + '-' + bills?.duedate?.getFullYear())+".pdf"}
+            trigger={reactToPrintTrigger}
+            style={{ fontWeight: 'bold' }}
+          />
+        )}
+        {!ver && (
+          <Button onClick={()=>{setVer(!ver);}}><strong>¿Estás feliz con el resultado?</strong></Button>
+        )}
+      </Stack>
         <div ref={componentRef} className={styles.container} id='divToPrint'>
           <div className={styles.header}>
             <div>
@@ -76,11 +87,11 @@ export function Bill() {
               <strong>Bill to: </strong>
               <p>{bills.nombre || 'Ricardo Arreaza'}</p>
               <p>
-                {(bills?.calle ?? '')  + ' ' + (bills?.piso ?? '')  + ' ' + (bills?.oficina ?? '')}
+                { (bills.calle ?? '')  + ' ' + (bills.piso ?? '')  + ' ' + (bills.oficina ?? '')}
               </p>
-              <p>{bills.postal || '50970-020'}</p>
+              <p>{bills.postal || ''}</p>
               <p id='cpais' className='_CompanyCountry'>
-                {bills.pais || 'Venezuela'}
+                {bills.pais || ''}
               </p>
             </div>
             <div className={styles.paymentDetails}>
@@ -140,23 +151,26 @@ export function Bill() {
               </tfoot>
             </table>
           </section>
-
+          {!ver && (
+            <footer className={styles.footer}>
+              <div id='fBorder1'></div>
+              <div id='fBorder2'></div>
+            </footer>
+          )}
+          {ver && (
             <footer className={styles.footerSmall}>
               <div id='fBorder1'></div>
               <div id='fBorder2'></div>
-            </footer>    
+            </footer>  
+          )}
+  
 
 {/*           
             <footer className={styles.footer}>
               <div className={styles.fBorder1}></div>
               <div className={styles.fBorder2}></div>
             </footer>   
-          {bills?.items?.length > 5 && (
-            <footer className={styles.footer}>
-              <div id='fBorder1'></div>
-              <div id='fBorder2'></div>
-            </footer>
-          )} */}
+           */}
 
         </div>
     </>

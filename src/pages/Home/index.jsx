@@ -42,7 +42,7 @@ export function Home() {
       ) {
         setDataErrors(true);
       } else {
-        const fullBill = { ...data, items, indate: fecha, duedate: dueFecha };
+        const fullBill = { ...data, ...direccion, items, indate: fecha, duedate: dueFecha };
         saveBills(fullBill);
         navigate('/bill');
       }
